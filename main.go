@@ -20,17 +20,19 @@ func main() {
 
 	os.Getenv("OPENAI_API_KEY")
 
-	myThread := thread.New().AddMessage(
-		thread.NewUserMessage().AddContent(
-			thread.NewTextContent("Tell me a joke about geese"),
-		),
-	)
+	newUserMessage := thread.NewUserMessage()
+	newTextContent := thread.NewTextContent("Tell me a joke about geese")
+	message := newUserMessage.AddContent(newTextContent)
 
-	err = openai.New().Generate(context.Background(), myThread)
+	myThread := thread.New()
+	myThread.AddMessage(message)
+
+	myOpenAI := openai.New()
+	err = myOpenAI.Generate(context.Background(), myThread)
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(myThread)
+	fmt.Printf("\nmyThread: %v\n\n", myThread)
 }
